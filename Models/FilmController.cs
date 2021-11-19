@@ -10,7 +10,13 @@ namespace FilmDB.Models
     {
         public IActionResult Index()
         {
-            return View();
+            FilmModel FilmModel = new FilmModel();
+            FilmModel.ID = 1;
+            FilmModel.Title = "Hobbit";
+            FilmModel.Year = 2010;
+            FilmManager FilmManager = new FilmManager();
+            FilmManager.AddFilm(FilmModel);
+            return null;
         }
     }
 }
