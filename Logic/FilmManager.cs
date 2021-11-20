@@ -39,22 +39,44 @@ namespace FilmDB
 
         public FilmManager UpdateFilm(FilmModel filmModel)
         {
+            using (var context = new FilmContext())
+            {
+                context.Update(filmModel);
+                context.SaveChanges();
+            }
             return this;
         }
 
         public FilmManager ChangeTitle(int id, string newTitle)
         {
+            using (var context = new FilmContext())
+            {
+                var film = context.Films.SingleOrDefault(x => x.ID == id);
+                if (newTitle == null)
+                    film.Title = "Brak tytułu";
+                else
+                    film.Title = newTitle;
+                this.UpdateFilm(film);
+                context.SaveChanges();
+            }
             return this;
         }
 
-        public FilmManager GetFilm(int id)
+        public FilmModel GetFilm(int id)
         {
-            return null;
+            using (var context = new FilmContext())
+            {
+                var film = context.Films.SingleOrDefault(x => x.ID == id);
+                return film;
+            }
         }
 
         public List<FilmModel> GetFilms()
         {
-            return null;
+            using (var context = new FilmContext())
+            {
+                var films = context.Films.ToList<FilmModel>();
+                return films;            }
         }
     }
 }

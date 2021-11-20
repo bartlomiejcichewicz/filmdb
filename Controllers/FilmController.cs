@@ -18,5 +18,17 @@ namespace FilmDB.Models
             manager.AddFilm(film);
             return View();
         }
+        [HttpGet]
+        public IActionResult Add()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Add(FilmModel film)
+        {
+            var manager = new FilmManager();
+            manager.AddFilm(film);
+            return RedirectToAction("Index");
+        }
     }
 }
