@@ -10,13 +10,30 @@ namespace FilmDB
     {
         public FilmManager AddFilm(FilmModel filmModel)
         {
-            using FilmContext context = new FilmContext();
-            context.Films.Add(filmModel);
-            context.SaveChanges();
+            using (var context = new FilmContext())
+            {
+                context.Add(filmModel);
+                try
+                {
+                    context.SaveChanges();
+                }
+                catch (Exception)
+                {
+                    filmModel.ID = 0;
+                    context.Add(filmModel);
+                    context.SaveChanges();
+                }
+            }
             return this;
          }
         public FilmManager RemoveFilm(int id)
         {
+            using (var context = new FilmContext())
+            {
+                var film = context.Films.SingleOrDefault(x => x.ID == id);
+                context.Remove(film);
+                context.SaveChanges();
+            }
             return this;
         }
 
